@@ -1,7 +1,7 @@
-package com.gdxgame.app;
+package com.gdxgame.app.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.gdxgame.app.helpers.Poolable;
+import com.gdxgame.app.game.helpers.Poolable;
 import com.gdxgame.app.screen.ScreenManager;
 
 public class Bullet implements Poolable {

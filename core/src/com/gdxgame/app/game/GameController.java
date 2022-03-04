@@ -1,4 +1,4 @@
-package com.gdxgame.app;
+package com.gdxgame.app.game;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.gdxgame.app.screen.ScreenManager;
@@ -6,11 +6,11 @@ import com.gdxgame.app.screen.ScreenManager;
 public class GameController {
     private BackgroundGdx background;
     private BulletController bulletController;
-    private RockController asteroidController;
+    private RockController rockController;
     private Hero hero;
 
     public RockController getAsteroidController() {
-        return asteroidController;
+        return rockController;
     }
 
     public BulletController getBulletController() {
@@ -28,11 +28,11 @@ public class GameController {
     public GameController() {
         this.background = new BackgroundGdx(this);
         this.bulletController = new BulletController();
-        this.asteroidController = new RockController(this);
+        this.rockController = new RockController(this);
         this.hero = new Hero(this);
 
         for (int i = 0; i < 3; i++) {
-            asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
+            rockController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
                     MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
                     MathUtils.random(-150, 150), MathUtils.random(-150, 150), 1.0f);
         }
@@ -41,7 +41,7 @@ public class GameController {
     public void update(float dt) {
         background.update(dt);
         bulletController.update(dt);
-        asteroidController.update(dt);
+        rockController.update(dt);
         hero.update(dt);
         checkCollisions();
     }
@@ -50,8 +50,8 @@ public class GameController {
     public void checkCollisions() {
         for (int i = 0; i < bulletController.getActiveList().size(); i++) {
             Bullet b = bulletController.getActiveList().get(i);
-            for (int j = 0; j < asteroidController.getActiveList().size(); j++) {
-                Rock a = asteroidController.getActiveList().get(j);
+            for (int j = 0; j < rockController.getActiveList().size(); j++) {
+                Rock a = rockController.getActiveList().get(j);
                 if (a.getHitArea().contains(b.getPosition())) {
                     b.deactivate();
                     if (a.takeDamage(1)) {

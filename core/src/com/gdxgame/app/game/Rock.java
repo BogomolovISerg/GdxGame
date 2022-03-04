@@ -1,20 +1,41 @@
-package com.gdxgame.app;
+package com.gdxgame.app.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.gdxgame.app.game.helpers.Poolable;
+import com.gdxgame.app.screen.ScreenManager;
+import com.gdxgame.app.screen.utils.Assets;
 
-public class Rock {
+public class Rock implements Poolable {
     private GameController gc;
-    private Texture texture;
+    private TextureRegion texture;
     private Vector2 position;
     private Vector2 lastDisplacement;
     private float angle;
+    private boolean active;
+    private int hpMax;
+    private int hp;
+    private float rotationSpeed;
+    private Circle hitArea;
+    private float scale;
+
+    private final float BASE_SIZE = 256.0f;
+    private final float BASE_RADIUS = BASE_SIZE / 2;
+
+    public float getScale() {
+        return scale;
+    }
+
+    public int getHpMax() {
+        return hpMax;
+    }
+
+    public Circle getHitArea() {
+        return hitArea;
+    }
 
     public Vector2 getPosition() {
         return position;
@@ -28,28 +49,41 @@ public class Rock {
         return angle;
     }
 
-    public Rock() {
-        this.texture = new Texture("asteroid.png");
+    public Rock(GameController gc) {
+        this.gc = gc;
+        this.position = new Vector2();
+        this.lastDisplacement = new Vector2();
+        this.hitArea = new Circle(0, 0, 0);
+        this.active = false;
+        this.texture = Assets.getInstance().getAtlas().findRegion("asteroid");
+
         this.position = new Vector2(300, 300);
         this.lastDisplacement = new Vector2(0, 0);
         this.angle = 0.0f;
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x - 32, position.y - 32, 32, 32,
-                64, 64, 1, 1, angle, 0, 0, 256, 256,
-                false, false);
+        batch.draw(texture, position.x - 128, position.y - 128, 128, 128,
+                256, 256, scale, scale, angle);
     }
 
     public void update(float dt) {
-        angle += 20 * dt;
-        if (angle > 360) angle = 0;
+        position.mulAdd(lastDisplacement, dt);
+        angle += rotationSpeed * dt;
 
-        position.x += MathUtils.cosDeg(160) * 100f * dt;
-        position.y += MathUtils.sinDeg(160) * 100f * dt;
-        lastDisplacement.set(MathUtils.cosDeg(160) * 100f * dt, MathUtils.sinDeg(160) * 100f * dt);
-
-        checkBorders();
+        if (position.x < -200) {
+            position.x = ScreenManager.SCREEN_WIDTH + 200;
+        }
+        if (position.x > ScreenManager.SCREEN_WIDTH + 200) {
+            position.x = -200;
+        }
+        if (position.y < -200) {
+            position.y = ScreenManager.SCREEN_HEIGHT + 200;
+        }
+        if (position.y > ScreenManager.SCREEN_HEIGHT + 200) {
+            position.y = -200;
+        }
+        hitArea.setPosition(position);
     }
 
     public void checkBorders() {
@@ -64,6 +98,45 @@ public class Rock {
         }
         if (position.y > ScreenManager.SCREEN_HEIGHT) {
             position.y = -160f;
+        }
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+    public void deactivate() {
+        active = false;
+    }
+
+    public void activate(float x, float y, float vx, float vy, float scale) {
+        position.set(x, y);
+        lastDisplacement.set(vx, vy);
+        active = true;
+        hpMax = (int) (10 * scale);
+        hp = hpMax;
+        angle = MathUtils.random(0.0f, 360.0f);
+        rotationSpeed = MathUtils.random(-180.0f, 180.0f);
+        hitArea.setPosition(x, y);
+        this.scale = scale;
+        hitArea.setRadius(BASE_RADIUS * scale * 0.9f);
+    }
+
+    public boolean takeDamage(int amount) {
+        hp -= amount;
+        if (hp <= 0) {
+            deactivate();
+            if (scale > 0.41f) {
+                gc.getAsteroidController().setup(position.x, position.y,
+                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.3f);
+                gc.getAsteroidController().setup(position.x, position.y,
+                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.3f);
+                gc.getAsteroidController().setup(position.x, position.y,
+                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.3f);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 }
