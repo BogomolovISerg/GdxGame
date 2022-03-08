@@ -43,8 +43,6 @@ public class Weapon {
     }
 
     public void fire() {
-        if (curBullets > 0) {
-            curBullets--;
 
             for (int i = 0; i < slots.length; i++) {
                 float x, y, vx, vy;
@@ -55,7 +53,6 @@ public class Weapon {
 
                 gc.getBulletController().setup(x, y, vx, vy);
             }
-        }
     }
 }
 
