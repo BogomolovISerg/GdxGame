@@ -73,18 +73,7 @@ public class Hero {
             if (fireTimer > 0.2) {
                 fireTimer = 0.0f;
 
-                float wx = position.x + MathUtils.cosDeg(angle + 90) * 20;
-                float wy = position.y + MathUtils.sinDeg(angle + 90) * 20;
-
-                gc.getBulletController().setup(wx, wy,
-                        MathUtils.cosDeg(angle) * 500 + velocity.x,
-                        MathUtils.sinDeg(angle) * 500 + velocity.y);
-
-
-                wx = position.x + MathUtils.cosDeg(angle - 90) * 20;
-                wy = position.y + MathUtils.sinDeg(angle - 90) * 20;
-
-                gc.getBulletController().setup(wx, wy,
+                gc.getBulletController().setup(position.x, position.y, //wx, wy,
                         MathUtils.cosDeg(angle) * 500 + velocity.x,
                         MathUtils.sinDeg(angle) * 500 + velocity.y);
 

@@ -46,7 +46,6 @@ public class GameController {
         checkCollisions();
     }
 
-
     public void checkCollisions() {
         for (int i = 0; i < bulletController.getActiveList().size(); i++) {
             Bullet b = bulletController.getActiveList().get(i);
@@ -54,9 +53,8 @@ public class GameController {
                 Rock a = rockController.getActiveList().get(j);
                 if (a.getHitArea().contains(b.getPosition())) {
                     b.deactivate();
-                    if (a.takeDamage(1)) {
-                        hero.addScore(a.getHpMax() * 100 );
-                    }
+                    a.deactivate();
+                    hero.addScore(a.getHpMax() * 100 );
                     break;
                 }
             }
