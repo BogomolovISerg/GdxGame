@@ -6,18 +6,18 @@ import com.gdxgame.app.game.WorldRenderer;
 import com.gdxgame.app.screen.utils.Assets;
 
 public class GameScreen extends AbstractScreen{
-    private SpriteBatch batch;
+
     private GameController gc;
     private WorldRenderer worldRenderer;
 
     public GameScreen(SpriteBatch batch) {
-        this.batch = batch;
+        super(batch);
     }
 
     @Override
     public void show() {
         Assets.getInstance().loadAssets(ScreenManager.ScreenType.GAME);
-        this.gc = new GameController();
+        this.gc = new GameController(batch);
         this.worldRenderer = new WorldRenderer(gc, batch);
     }
 
@@ -25,5 +25,10 @@ public class GameScreen extends AbstractScreen{
     public void render(float delta) {
         gc.update(delta);
         worldRenderer.render();
+    }
+
+    @Override
+    public void dispose() {
+        gc.dispose();
     }
 }

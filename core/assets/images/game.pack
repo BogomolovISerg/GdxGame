@@ -3,51 +3,58 @@ images1.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-many
-  rotate: false
-  xy: 2, 2
-  size: 675, 590
-  orig: 675, 590
-  offset: 0, 0
-  index: -1
-medickit
-  rotate: false
-  xy: 679, 2
-  size: 315, 321
-  orig: 315, 321
-  offset: 0, 0
-  index: -1
-bullets
-  rotate: false
-  xy: 679, 325
-  size: 264, 263
-  orig: 264, 263
-  offset: 0, 0
-  index: -1
 asteroid
   rotate: false
-  xy: 2, 594
+  xy: 2, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+powerups
+  rotate: false
+  xy: 2, 260
+  size: 360, 240
+  orig: 360, 240
+  offset: 0, 0
+  index: -1
+simpleButton
+  rotate: false
+  xy: 2, 502
+  size: 320, 80
+  orig: 320, 80
+  offset: 0, 0
+  index: -1
+shortButton
+  rotate: false
+  xy: 260, 2
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
 ship
   rotate: false
-  xy: 945, 325
+  xy: 342, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+smButton
+  rotate: false
+  xy: 260, 84
+  size: 120, 32
+  orig: 120, 32
+  offset: 0, 0
+  index: -1
 bullet
   rotate: false
-  xy: 945, 391
+  xy: 408, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 star16
   rotate: false
-  xy: 996, 2
+  xy: 408, 36
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

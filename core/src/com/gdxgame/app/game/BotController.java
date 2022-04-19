@@ -1,34 +1,31 @@
 package com.gdxgame.app.game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.gdxgame.app.game.helpers.ObjectPool;
 import com.gdxgame.app.screen.utils.Assets;
 
-public class BulletController extends ObjectPool<Bullet> {
-    private TextureRegion bulletTexture;
+public class BotController extends ObjectPool<Bot> {
     private GameController gc;
 
     @Override
-    protected Bullet newObject() {
-        return new Bullet(gc);
+    protected Bot newObject() {
+        return new Bot(gc);
     }
 
-    public BulletController(GameController gc) {
+    public BotController(GameController gc) {
         this.gc = gc;
-        this.bulletTexture = Assets.getInstance().getAtlas().findRegion("bullet");
     }
 
     public void render(SpriteBatch batch) {
         for (int i = 0; i < activeList.size(); i++) {
-            Bullet b = activeList.get(i);
-            batch.draw(bulletTexture, b.getPosition().x - 16, b.getPosition().y - 16);
+            Bot b = activeList.get(i);
+            b.render(batch);
         }
     }
 
-    public void setup(Ship owner, float x, float y, float vx, float vy){
-        getActiveElement().activate(owner, x, y, vx, vy);
+    public void setup(float x, float y){
+        getActiveElement().activate(x, y);
     }
 
     public void update(float dt) {
