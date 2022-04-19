@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.gdxgame.app.game.Background;
 import com.gdxgame.app.screen.utils.Assets;
 
-
 public class MenuScreen extends AbstractScreen {
     private BitmapFont font72;
     private BitmapFont font24;
